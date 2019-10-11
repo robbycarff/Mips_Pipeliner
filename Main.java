@@ -82,10 +82,17 @@ public class Main {
 				else if(true){
 					System.out.println("This is an Instruction");
 					// instruction " " reg3, reg2 ,reg1
-					
+
 					// parse this tasty morsel
-					String parsedLine = checkLine.split(" ");
-					Instructions.add(parsedLine);
+					Instructions.add(checkLine);
+
+
+					//split the string, save it as an array
+					String[] parsedLine = checkLine.split(" ",1);
+					for (String a : parsedLine)
+						//I think im going to push strings into the list here
+						System.out.println(a);
+					//Instructions.add(parsedLine);
 				}
 				else{
 					System.out.println("Cant classify that line");
@@ -113,6 +120,7 @@ public class Main {
 	****************************************************************************/
 	public static void generateSchedule(){
 		//do the work here
+
 	}
 
 	public static void printSchedule(){
@@ -122,9 +130,9 @@ public class Main {
 
 	public static void main(String[] args){
 		readAssembly();
-		generateSchedule();
-		printComments();
-		printInstructions();
+		//generateSchedule();
+		//printComments();
+		//printInstructions();
 
 	}
 }
