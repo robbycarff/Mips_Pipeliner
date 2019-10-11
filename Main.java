@@ -5,6 +5,8 @@ Date: October 7, 2019
 
 This project was written for Dr. Buells 513 Computer Archtecture class 
 
+everything is global because im lazy, I know this is horrible practice
+
 	Instruction fetchCC decodeCC executeCC decodeCC writeCC
 	    lw         0.      1.        2.       3.       4.
 	    lw         1.      2.        3.       4.       5.  
@@ -22,10 +24,14 @@ public class Main {
 	int _execute_ = 2;
 	int _decode_2_ = 3;
 	int _write_ = 4;
-	//These will be lists of lists, I can can print out the lines I want
-	private static List<String> Comments = new ArrayList<>();
-	private static List<String> Header = new ArrayList<>();
-	private static List<String> Instructions = new ArrayList<>();
+	// I can use these lists if I want to see comments or instructions
+	private static ArrayList<String> Comments = new ArrayList<>();
+	private static ArrayList<String> Header = new ArrayList<>();
+	private static ArrayList<String> instruction = new ArrayList<>();
+	//2x2 dothework list (first list in parse funct)
+	private static ArrayList<ArrayList<String>> instructionList = new ArrayList<ArrayList<String>>();
+	//2x2 answer list (first list in parse funct)
+	private static ArrayList<ArrayList<String>> Answer = new ArrayList<ArrayList<String>>();
 	/****************************************************************************
 	* Methods for printing out each of my lists 
 	****************************************************************************/
@@ -36,7 +42,6 @@ public class Main {
 	      }
 	      System.out.println("\n");
 	}
-
 	public static void printHeader(){
 		for(String line : Header)
 		  { 		      
@@ -44,9 +49,24 @@ public class Main {
 	      }
 	  		System.out.println("\n");
 	}
-
-	public static void printInstructions(){
-		for(String line : Instructions)
+	public static void printinstruction(){
+		for(String line : instruction)
+		  { 		      
+	           System.out.println(line); 		
+	      }
+	      System.out.println("\n");
+	}
+	//2X2 DOTHEWORK LIST PRINT METHODS
+		public static void printinstructionList(){
+		for(ArrayList line : instructionList)
+		  { 		      
+	           System.out.println(line); 		
+	      }
+	      System.out.println("\n");
+	}	
+	//2X2 ANSWER LIST PRINT METHODS
+	public static void printAnswer(){
+		for(ArrayList line : Answer)
 		  { 		      
 	           System.out.println(line); 		
 	      }
@@ -66,44 +86,48 @@ public class Main {
 			try {
 				//IF THE LINE STARTS WITHS A # SIGN
 				if(checkLine.contains("#")){
-					System.out.println("This is a comment");
 					Comments.add(checkLine);
 				}
 				//IF THE LINE STARTS WITH A .
 				else if(checkLine.contains(".")){
-					System.out.println("This is a Header line");
 					Header.add(checkLine);
 				}
 				//IF THE LINE HAS A COLON IN IT
 				else if(checkLine.contains(":")){
-					System.out.println("This is a header");
 				}
 				//ELSE IF THE LINE IS IN OUR DICTIONARY OF RISC-V INSTRUCTIONS
 				else if(true){
-					System.out.println("This is an Instruction");
-					// instruction " " reg3, reg2 ,reg1
+					instruction.add(checkLine); // add the line to the list of instructions
+					ArrayList<String> instructionParsed = new ArrayList<>(); //creating my new list
+					ArrayList<String> instructionAnswer = new ArrayList<>(); //creating my new list
+					String[] parsedInstruction = checkLine.split("\\s+");
 
-					// parse this tasty morsel
-					Instructions.add(checkLine);
+					//ADDING TO COMPUTE LIST
+					instructionParsed.add(parsedInstruction[1]);
+					try{
+						String[] parsedRegister = parsedInstruction[2].split(",");
+						for (String a : parsedRegister){
+							instructionParsed.add(a);
+						}
+					}catch(Exception e){
+						//System.out.println("you broke it dude");
+					}
+					instructionList.add(instructionParsed);
 
-
-					//split the string, save it as an array
-					String[] parsedLine = checkLine.split(" ",1);
-					for (String a : parsedLine)
-						//I think im going to push strings into the list here
-						System.out.println(a);
-					//Instructions.add(parsedLine);
+					//ADDING TO ANSWER LIST
+					instructionAnswer.add(parsedInstruction[1]);
+					for(int i = 0; i <= 4; i++){
+						instructionAnswer.add(Integer.toString(i));
+					}
+					Answer.add(instructionAnswer);
 				}
 				else{
 					System.out.println("Cant classify that line");
 				}
 			}
 			catch(Exception e){
-				System.out.println("you broke it dude");
+				//System.out.println("you broke it dude");
 			}
-			//3 different sets of lists?
-			System.out.println(checkLine);
-			System.out.println("\n");
 		}
 	}
 	/****************************************************************************
@@ -119,12 +143,32 @@ public class Main {
 	*
 	****************************************************************************/
 	public static void generateSchedule(){
-		//do the work here
+		//walking through a list of lists
+		for (int j = 0; j < Answer.size(); j++){
+			for (int i = 0; i <= 5; i++){
 
+
+				//System.out.print(Answer.get(j).get(i) + " ");
+
+			
+			}
+			//System.out.println("\n");
+		}
 	}
 
 	public static void printSchedule(){
-		//format and print the final answer here	
+		//format and print the final answer here
+		System.out.println(" * Answer Table * ");
+		System.out.println(" Instruction - fetchCC - decodeCC - executeCC - decodeCC - writeCC ");
+		//pretty format
+		for (int j = 0; j < Answer.size(); j++){
+			for (int i = 0; i <= 5; i++){
+				System.out.print(Answer.get(j).get(i) + "       ");
+
+			
+			}
+			System.out.println("\n");
+		}
 	}
 
 
@@ -132,7 +176,8 @@ public class Main {
 		readAssembly();
 		//generateSchedule();
 		//printComments();
-		//printInstructions();
-
+		printinstructionList();
+		printSchedule();
+		generateSchedule();
 	}
 }
