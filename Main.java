@@ -164,7 +164,6 @@ public class Main {
 		for (int j = 0; j < Answer.size(); j++){
 			for (int i = 0; i <= 5; i++){
 				System.out.print(Answer.get(j).get(i) + "       ");
-
 			
 			}
 			System.out.println("\n");
