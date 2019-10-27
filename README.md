@@ -1,5 +1,4 @@
-# Mips_Pipeliner
-### Mips Pipeliner
+## Mips Pipeliner
 
 #### Abstract
 
@@ -26,7 +25,7 @@ So far I am running my application by passing in text files that are in the dire
 
 Example:
 
-	C_Loop_Mips.txt > java Main.java
+	java Main.java < C_Loop.txt
 
 
 

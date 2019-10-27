@@ -5,12 +5,25 @@ Date: October 7, 2019
 
 This project was written for Dr. Buells 513 Computer Archtecture class 
 
-everything is global because im lazy, I know this is horrible practice
+everything is global because im lazy and this is a simulattor.
+I know this is horrible practice.
 
-	Instruction fetchCC decodeCC executeCC decodeCC writeCC
-	    lw         0.      1.        2.       3.       4.
-	    lw         1.      2.        3.       4.       5.  
-	   addi        2       3         4        5        6
+This program takes the same approach as a two-pass assembler.
+
+I loop over my list of lists, reading each instruction. 
+I then increment my global resource values acordingly and move on.
+
+I then re-iterate over the list, adding in stalls to prevent hazards
+ and shifting each ensuing value according to how long I had to stall.
+
+This program is executed by typing the following command in your terminal
+	java Main.java < file_containing_mips.txt
+
+	java Main.java < C_Loop.txt
+
+I am using the RV64G Instruction subset from the back of our text book
+"Computer architecture, a quantitative approach" by Hennesy and patterson
+
 *****************************************************************************/
 
 /* IMPORTS */
@@ -18,12 +31,7 @@ import java.io.*;
 import java.util.*;
 /* MAIN CLASS */
 public class Main {
-/* GLOBAL RESOURCE VARIABLES */
-	int _fetch_ = 0;
-	int _decode_1_ = 1;
-	int _execute_ = 2;
-	int _decode_2_ = 3;
-	int _write_ = 4;
+
 	// I can use these lists if I want to see comments or instructions
 	private static ArrayList<String> Comments = new ArrayList<>();
 	private static ArrayList<String> Header = new ArrayList<>();
@@ -117,7 +125,7 @@ public class Main {
 					//ADDING TO ANSWER LIST
 					instructionAnswer.add(parsedInstruction[1]);
 					for(int i = 0; i <= 4; i++){
-						instructionAnswer.add(Integer.toString(i));
+						instructionAnswer.add(Integer.toString(0));
 					}
 					Answer.add(instructionAnswer);
 				}
@@ -141,31 +149,76 @@ public class Main {
 	* Five Variables of each instruction: 
 	*		Fetch, Decode, Execute, Decode, Write
 	*
+	* answer list has 6 spaces
+	* 0 = MIPS instruction, 1 = fetch, 2 = decode, 3 = execute, 4 = decode, 5 = write
 	****************************************************************************/
 	public static void generateSchedule(){
-		//walking through a list of lists
+		/* RESOURCE VARIABLES */
+		int _if_  = 0;
+		int _id_  = 1;
+		int _ex_  = 2;
+		int _mem_ = 3;
+		int _wb_  = 4;
+		//THESE ARE OUR DIFFERENT INSTRUCTION LISTS
+		ArrayList<String> datatransfer = 
+			new ArrayList<String>(Arrays.asList("lb","lbu","lh","lhu","lw","lwu","ld","sd","sb","sh","sw","fld","flw","fsd","fsw"));
+
+		ArrayList<String> aluoperation = 
+			new ArrayList<String>(Arrays.asList("add","addi","addw","addiw", "addiu"));
+
+		//THIS IS THE FIRST PASS, IT LOOKS AT THE INSTRUCTION AND INCREMETS
+		//THE RESOUCES TIMES REQUIRED, it then stores them in our answer table
 		for (int j = 0; j < Answer.size(); j++){
-			for (int i = 0; i <= 5; i++){
-
-
-				//System.out.print(Answer.get(j).get(i) + " ");
-
-			
+			//if its a data transfer operation, increment
+			if(datatransfer.contains(instructionList.get(j).get(0))){
+				Answer.get(j).set(1, String.valueOf(_if_));
+				_if_++;
+				Answer.get(j).set(2, String.valueOf(_id_));
+				_id_++;
+				Answer.get(j).set(3, String.valueOf(_ex_));
+				_ex_++;
+				Answer.get(j).set(4, String.valueOf(_mem_));
+				_mem_++;
+				Answer.get(j).set(5, "-1");
+				_wb_++;
 			}
-			//System.out.println("\n");
-		}
-	}
+			if(aluoperation.contains(instructionList.get(j).get(0))){
+				Answer.get(j).set(1, String.valueOf(_if_));
+				_if_++;
+				Answer.get(j).set(2, String.valueOf(_id_));
+				_id_++;
+				Answer.get(j).set(3, String.valueOf(_ex_));
+				_ex_++;
+				Answer.get(j).set(4, String.valueOf(_mem_));
+				_mem_++;
+				Answer.get(j).set(5, String.valueOf(_wb_));
+				_wb_++;
+			}
 
+		}
+
+		// SECOND PASS -INSERTING STALLS 
+		for (int j = 0; j < Answer.size(); j++){
+
+		}
+
+
+	}
+	/****************************************************************************
+	Instruction fetchCC decodeCC executeCC decodeCC writeCC
+	    lw         0.      1.        2.       3.       4.
+	    lw         1.      2.        3.       4.       5.  
+	   addi        2       3         4        5        6
+	****************************************************************************/
 	public static void printSchedule(){
 		//format and print the final answer here
-		System.out.println(" * Answer Table * ");
+		System.out.println("                      *** ANSWER TABLE *** ");
 		System.out.println(" Instruction - fetchCC - decodeCC - executeCC - decodeCC - writeCC ");
 		//pretty format
 		for (int j = 0; j < Answer.size(); j++){
-			for (int i = 0; i <= 5; i++){
-				System.out.print(Answer.get(j).get(i) + "       ");
-			
-			}
+				System.out.format(" %8s%11s%11s%11s%11s%11s", Answer.get(j).get(0), Answer.get(j).get(1), 
+															  Answer.get(j).get(2), Answer.get(j).get(3), 
+															  Answer.get(j).get(4), Answer.get(j).get(5));
 			System.out.println("\n");
 		}
 	}
@@ -176,7 +229,8 @@ public class Main {
 		//generateSchedule();
 		//printComments();
 		printinstructionList();
-		printSchedule();
 		generateSchedule();
+		printSchedule();
+
 	}
 }
