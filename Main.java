@@ -262,28 +262,54 @@ public class Main {
 
 		//ignoring first line b/c its always set to 0 1 2 3 4
 		for (int j = 1; j < Answer.size(); j++){
-			
-
 			//if it is a branch operation - used two cycles, dont need to shift down registers
 			if(controltransfer.contains(instructionList.get(j-1).get(0)) ){
-	
+				//this will be the next time that we can read the register
+				_REGREAD_ = Integer.parseInt(Answer.get(j-1).get(2));
+				System.out.println("REG READ TIME: " + _REGREAD_);
 			}
 
 			//if its a store option - takes four cycles - no wb
 			if(datatransfer.contains(instructionList.get(j-1).get(0))){
-
-
+				//this will be the next time that we can read the register
+				_REGREAD_ = Integer.parseInt(Answer.get(j-1).get(2));
+				System.out.println("REG READ TIME: " + _REGREAD_);
 			}
 
 			// its an ALU operation - takes 5 cycles, SO WE ADD IN SOME STALLS
 			if(aluoperation.contains(instructionList.get(j-1).get(0)) ){
 				//this will be the next time that we can read the register
 				_REGREAD_ = Integer.parseInt(Answer.get(j-1).get(4));
-				System.out.println(_REGREAD_);
+				System.out.println("REG READ TIME: "  + _REGREAD_);
+			}
+
+			/****************************************************************************
+			This is how I make sure I dont over write all my first pass work
+			****************************************************************************/
+			if(controltransfer.contains(instructionList.get(j).get(0)) ){
+				Answer.get(j).set(1, String.valueOf(_REGREAD_));
+				Answer.get(j).set(2, String.valueOf(_REGREAD_ + 1));
+				Answer.get(j).set(3, String.valueOf(-1));
+				Answer.get(j).set(4, String.valueOf(-1));
+				Answer.get(j).set(5, String.valueOf(-1));
+			}
+
+			//if its a store operarion, takes 4 cycles
+			if(datatransfer.contains(instructionList.get(j).get(0))){
 				Answer.get(j).set(1, String.valueOf(_REGREAD_));
 				Answer.get(j).set(2, String.valueOf(_REGREAD_ + 1));
 				Answer.get(j).set(3, String.valueOf(_REGREAD_ + 2));
 				Answer.get(j).set(4, String.valueOf(_REGREAD_ + 3));
+				Answer.get(j).set(5, "-1");
+			}
+
+			// all other operations take five cycles - not checking for RR or MEM cycles
+			if( aluoperation.contains(instructionList.get(j).get(0))){
+				Answer.get(j).set(1, String.valueOf(_REGREAD_));
+				Answer.get(j).set(2, String.valueOf(_REGREAD_ + 1));
+				Answer.get(j).set(3, String.valueOf(_REGREAD_ + 2));
+				Answer.get(j).set(4, String.valueOf(_REGREAD_ + 3));
+				Answer.get(j).set(5, String.valueOf(_REGREAD_ + 4));
 			}
 
 		}
@@ -317,7 +343,7 @@ public class Main {
 		//printComments();			// print out comments if you want to see them
 		printinstructionList(); 	// print out the instructions we parsed
 		generateSchedule(); 		// go ahead and do the work generating the schedule
-		System.out.println("ANSWER TABLE AFTER INSTERTING STALLS");
+		System.out.println("\nANSWER TABLE AFTER INSTERTING STALLS");
 		printSchedule();			// pring out our generated schedule
 
 	}
