@@ -202,7 +202,7 @@ public class Main {
 		int _mem_ = 3;
 		int _wb_  = 4;
 
-		// running through the list of instructions line by line 
+		//running through the list of instructions line by line 
 		for (int j = 0; j < Answer.size(); j++){
 			//if it is a branch operation - no EX, MEM, or WB
 			if(controltransfer.contains(instructionList.get(j).get(0)) ){
