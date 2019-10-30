@@ -22,12 +22,12 @@ main:
 	addiu	$sp,$sp,-40
 	sw	$fp,36($sp)
 	move	$fp,$sp
-	li	$2,23			# 0x17
+	li	$2,23			
 	sw	$2,8($fp)
 	movz	$31,$31,$0
-	li	$2,29			# 0x1d
+	li	$2,29			
 	sw	$2,12($fp)
-	li	$2,31			# 0x1f
+	li	$2,31			
 	sw	$2,16($fp)
 	lw	$3,8($fp)
 	lw	$2,12($fp)

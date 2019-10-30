@@ -10,8 +10,7 @@ The second pass is used to check of the two registers being operated on require 
 
 ### Implementation
 
-I decided to implement my scheduler in java. The program takes in a file similar to the examples shown in class. I read in data and created two, two-by-two matricies. Matrix one stores ------
-	Matrix two holds my formatted output. Each line contains an instruction, along with its resouce-variable calculated time.
+I decided to implement my scheduler in java. The program takes in a file similar to the examples shown in class. I read in data and created two, two-by-two matricies. Matrix one stores the actual instruction and its required registers. Matrix two holds my formatted output. Each line contains an instruction, along with its resouce-variable calculated time.
 
 ##### How to use on your own code
 
@@ -26,6 +25,12 @@ So far I am running my application by passing in text files that are in the dire
 Example:
 
 	java Main.java < C_Loop.txt
+
+
+	java Main.java < mipscode2.txt
+
+
+	java Main.java < mipscode3.txt
 
 
 

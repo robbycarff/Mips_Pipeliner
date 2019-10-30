@@ -186,14 +186,13 @@ public class Main {
 		//THESE ARE OUR DIFFERENT INSTRUCTION LISTS - slow b/c of the way lists search (binary tree)
 
 		ArrayList<String> controltransfer = // these should take 2 cycles
-			new ArrayList<String>(Arrays.asList("bne","j","b","slt"));
+			new ArrayList<String>(Arrays.asList("bne","j","b"));
 
 		ArrayList<String> datatransfer = //these should take 4 cycles - no wb
-			new ArrayList<String>(Arrays.asList("lb","ld","sw","fld","flw","fsd","fsw","lw","li"));
+			new ArrayList<String>(Arrays.asList("lb","ld","sw","fld","flw","fsd","fsw"));
 		
 		ArrayList<String> aluoperation = // all others should take 5 cycles
-			new ArrayList<String>(Arrays.asList("add","addi","addw","addiw", "addu", "addiu","move","movz"));
-
+			new ArrayList<String>(Arrays.asList("add","addi","addw","addiw", "addu", "addiu","move","movz","lw","mult","mflo","li","sll","slt"));
 
 		/****************************************************************************
 		This is the first pass of the schedule generator, it is where we loop throough
@@ -254,11 +253,8 @@ public class Main {
 		 - ASSUMING ANY WRITE TO REGISTER STALLS IN READING (WE HAVE ONE RESOURCE)
 		****************************************************************************/
 		/* RESOURCE VARIABLES */
-		int _if2_  = 0; //can just set this to be before ALU each time
+		int _if2_  = 0; // can just set this to be before ALU each time
 		int _REGREAD_  = 0;
-		int _ALUFREE_  = 0;
-		int _MEMFREE_  = 0;
-		int _REGWRITE_ = 0;
 
 		//ignoring first line b/c its always set to 0 1 2 3 4
 		for (int j = 1; j < Answer.size(); j++){
@@ -311,7 +307,6 @@ public class Main {
 				Answer.get(j).set(4, String.valueOf(_REGREAD_ + 3));
 				Answer.get(j).set(5, String.valueOf(_REGREAD_ + 4));
 			}
-
 		}
 	}
 
