@@ -14,7 +14,7 @@ I decided to implement my scheduler in java. The program takes in a file similar
 
 ##### How to use on your own code
 
-I used Duke Universitie's [C to Mips compiler](http://reliant.colab.duke.edu/c2mips/ "C compiler") to convert typical  C code examples into Mips instructions. Feel free to convert your own code, and save it as a text file. The text file can then be piped into the program and scheduled, as shown below.
+I used Duke Universities' [C to Mips compiler](http://reliant.colab.duke.edu/c2mips/ "C compiler") to convert typical  C code examples into Mips instructions. Feel free to convert your own code, and save it as a text file. The text file can then be piped into the program and scheduled, as shown below.
 
 
 
