@@ -5,26 +5,23 @@ Date: October 7, 2019
 Use: written for Dr. Buells 513 Computer Archtecture class 
 
 everything is global because im lazy and this is a simulattor.
-I know this is horrible practice.
 
 This program takes the same approach as a two-pass assembler.
-
-I loop over my list of lists, reading each instruction. 
-I then increment my global resource values acordingly and move on.
-
-I then re-iterate over the list, adding in stalls to prevent hazards
-and shifting each ensuing value according to how long I had to stall.
+	I loop over my list of lists, reading each instruction. 
+	I then increment my global resource values acordingly and move on.
+	I then re-iterate over the list, adding in stalls to prevent hazards
+	and shifting each ensuing value according to how long I had to stall.
 
 This program is executed by typing the following command in your terminal
 	java Main.java < file_containing_mips.txt
-
-	java Main.java < C_Loop.txt
 
 I am using the RV64G Instruction subset from the back of our text book
 "Computer architecture, a quantitative approach" by Hennesy and patterson
  - I also just added in all the instructions from your examples online 
 
-each type of instruction has a set of steps 
+ ** MAKE SURE THERE ARE NO COMMENTS AFTER A LINE OF CODE, THIS WILL CAUSE THE 
+ READ FUNCTION TO CLASSIFY IT AS A COMMENT **
+
 *****************************************************************************/
 /* IMPORTS */
 import java.io.*;
@@ -94,7 +91,6 @@ public class Main {
 	/****************************************************************************
 	* readAssembly() takes a piped in file of assembley instructions, and breaks 
 	* it apart into comments, assembly, and MIPS.
-	* there is a function for 
 	****************************************************************************/
 	public static void readAssembly(){
 		Scanner scan = new Scanner(System.in);
@@ -186,7 +182,7 @@ public class Main {
 		//THESE ARE OUR DIFFERENT INSTRUCTION LISTS - slow b/c of the way lists search (binary tree)
 
 		ArrayList<String> controltransfer = // these should take 2 cycles
-			new ArrayList<String>(Arrays.asList("bne","j","b"));
+			new ArrayList<String>(Arrays.asList("bne","j","b","beq"));
 
 		ArrayList<String> datatransfer = //these should take 4 cycles - no wb
 			new ArrayList<String>(Arrays.asList("lb","ld","sw","fld","flw","fsd","fsw"));
